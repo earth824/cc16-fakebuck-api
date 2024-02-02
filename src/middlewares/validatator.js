@@ -28,21 +28,32 @@ const registerSchema = Joi.object({
         'password must be at least 6 characters and contain only alphabet and number',
       'any.required': 'password is required'
     }),
-  confirmPassword: Joi.string().required().valid(Joi.ref('password')).messages({
-    'string.empty': 'confirm password is required',
-    'any.only': 'password and confirm password did not match',
-    'any.required': 'confirm password is required'
+  confirmPassword: Joi.string()
+    .required()
+    .valid(Joi.ref('password'))
+    .messages({
+      'string.empty': 'confirm password is required',
+      'any.only': 'password and confirm password did not match',
+      'any.required': 'confirm password is required'
+    })
+    .strip(),
+  email: Joi.forbidden().when('emailOrMobile', {
+    is: Joi.string().email({ tlds: false }),
+    then: Joi.string().default(Joi.ref('emailOrMobile'))
   }),
-  email: Joi.string().forbidden().default(Joi.ref('password')),
-  mobile: Joi.string().forbidden().default(Joi.ref('password'))
+  mobile: Joi.forbidden().when('emailOrMobile', {
+    is: Joi.string().pattern(/^[0-9]{10}$/),
+    then: Joi.string().default(Joi.ref('emailOrMobile'))
+  })
 });
 
 const validateRegister = (req, res, next) => {
   const { value, error } = registerSchema.validate(req.body);
-  console.log(value);
   if (error) {
     throw error;
   }
+  req.body = value;
+  next();
 };
 
 module.exports = validateRegister;
