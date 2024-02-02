@@ -12,6 +12,7 @@ RESPONSE
 201
   {
     accessToken     string    user token
+    newUser         object    user object without password
   }
 400
   {

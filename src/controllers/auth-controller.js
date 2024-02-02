@@ -10,7 +10,7 @@ exports.register = catchError(async (req, res, next) => {
   );
 
   if (existsUser) {
-    createError('email address or mobile number already in use', 400);
+    createError('EMAIL_MOBILE_IN_USE', 400);
   }
 
   req.body.password = await hashService.hash(req.body.password);
@@ -18,6 +18,7 @@ exports.register = catchError(async (req, res, next) => {
   const newUser = await userService.createUser(req.body);
   const payload = { userId: newUser.id };
   const accessToken = jwtService.sign(payload);
+  delete newUser.password;
 
-  res.status(201).json({ accessToken });
+  res.status(201).json({ accessToken, newUser });
 });
