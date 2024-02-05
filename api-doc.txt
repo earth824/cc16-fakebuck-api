@@ -22,3 +22,24 @@ RESPONSE
   {
     message         string    server error message
   }
+
+POST /auth/login    login
+REQUEST BODY
+{
+  emailOrMobile*    string    email address or mobile number
+  password*         string    user password
+}
+RESPONSE
+200
+  {
+    accessToken     string    user token
+    user            object    user object without password
+  }
+400
+  {
+    message         string    client error message
+  }
+500
+  {
+    message         string    server error message
+  }
