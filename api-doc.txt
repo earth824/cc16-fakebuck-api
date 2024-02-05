@@ -40,6 +40,15 @@ RESPONSE
     message         string    client error message
   }
 500
+
   {
     message         string    server error message
   }
+
+GET /auth/me         get authenticated user data
+HEADER
+  AUTHORIZATION      Bearer [JWT]
+RESPONSE
+200  { user: { id, firstName, lastName, email, mobile, profileImage, coverImage, createdAt, updatedAt } }
+401  { message: 'unauthenticated' }
+500  { message: 'internal server errro' }
