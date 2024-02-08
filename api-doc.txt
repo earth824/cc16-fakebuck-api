@@ -60,7 +60,21 @@ REQUEST BODY              multipart/form-data
   profileImage?           user profile image
   coverImage?             user cover image
 RESPOSNSE
-  200 {  }
+  200 { profileImage: 'http://', coverImage: 'https://' }
   400 { message: 'unexpected field' }
   401 { message: 'unauthenticated' }
+  500 { message: 'internal server error' }
+
+POST      /relationships/users/:targetUserId                  request new friend
+PATCH     /relationships/users/:targetUserId/confirm          accept request     
+PATCH     /relationships/users/:targetUserId/reject           reject request
+PATCH     /relationships/users/:targetUserId/cancel           cancel request
+PATCH     /relationships/users/:targetUserId/unfriend         unfriend
+HEADER
+  AUTHORIZATION   Bearer [JWT]
+RESPOSNSE
+  200 { message: 'success request' }
+  400 { message: 'invalid relationships between two user' }
+  401 { message: 'unauthenticated' }
+  403 { message: 'cannot accept your request' }
   500 { message: 'internal server error' }
