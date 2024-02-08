@@ -2,6 +2,9 @@ const express = require('express');
 const upload = require('../middlewares/upload');
 
 const userController = require('../controllers/user-controller');
+const {
+  validateTargetUserId
+} = require('../middlewares/validator/validate-user');
 
 const router = express.Router();
 
@@ -12,6 +15,13 @@ router.patch(
     { name: 'coverImage', maxCount: 1 }
   ]),
   userController.updateUser
+);
+
+router.get(
+  '/:targetUserId/profile',
+  validateTargetUserId,
+  userController.checkExistUser,
+  userController.getUserProfileByTargetUserId
 );
 
 module.exports = router;

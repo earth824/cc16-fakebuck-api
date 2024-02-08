@@ -65,6 +65,15 @@ RESPOSNSE
   401 { message: 'unauthenticated' }
   500 { message: 'internal server error' }
 
+GET /users/:targetUserId/profile
+HEADER
+  AUTHORIZATION           Bearer [JWT]
+RESPOSNSE
+  200 { profileUser, profileUserFriends, relationshipToAuthUser }
+  400 { message: 'unexpected field' }
+  401 { message: 'unauthenticated' }
+  500 { message: 'internal server error' }
+
 POST      /relationships/users/:targetUserId                  request new friend
 PATCH     /relationships/users/:targetUserId/confirm          accept request     
 PATCH     /relationships/users/:targetUserId/reject           reject request
@@ -78,3 +87,4 @@ RESPOSNSE
   401 { message: 'unauthenticated' }
   403 { message: 'cannot accept your request' }
   500 { message: 'internal server error' }
+
