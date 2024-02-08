@@ -5,6 +5,14 @@ const createError = require('../utils/create-error');
 const userService = require('../services/user-service');
 const uploadService = require('../services/upload-service');
 
+exports.checkExistUser = catchError(async (req, res, next) => {
+  const existUser = await userService.findUserById(req.targetUserId);
+  if (!existUser) {
+    createError('user was not found', 400);
+  }
+  next();
+});
+
 exports.updateUser = catchError(async (req, res, next) => {
   if (!req.files) {
     createError('profile image or cover image is required', 400);
