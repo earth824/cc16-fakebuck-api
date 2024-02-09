@@ -107,3 +107,11 @@ RESPONSE
   200 { posts: [ post object ] },
   401 { message: 'unauthenticated' }
   500 { message: 'internal server error' }
+
+POST /posts/:postId/likes  Create like
+HEADER
+  AUTHORIZATION     Bearer [JWT]
+RESPONSE
+  200 { message: 'liked' },
+  401 { message: 'unauthenticated' }
+  500 { message: 'internal server error' }

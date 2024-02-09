@@ -1,6 +1,8 @@
 const express = require('express');
 
 const postController = require('../controllers/post-controller');
+const likeController = require('../controllers/like-controller');
+
 const {
   validateCreatePost
 } = require('../middlewares/validator/validate-post');
@@ -16,5 +18,6 @@ router.post(
 );
 
 router.get('/friends', postController.getAllPostIncludeFriendPost);
+router.post('/:postId/likes', likeController.toggleLike);
 
 module.exports = router;
