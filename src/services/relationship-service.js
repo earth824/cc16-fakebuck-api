@@ -105,3 +105,25 @@ exports.findUserOneRelationshipToUserTwo = async (userId1, userId2) => {
 
   return RELATIONSHIP_TO_AUTH_USER.RECEIVER;
 };
+
+exports.findFriendsIdByUserId = async userId => {
+  const relationships = await prisma.relationship.findMany({
+    where: {
+      status: RELATIONSHIP_STATUS.ACCEPTED,
+      OR: [{ senderId: userId }, { receiverId: userId }]
+    },
+    select: {
+      sender: {
+        select: userFilter
+      },
+      receiver: {
+        select: userFilter
+      }
+    }
+  });
+
+  const friendsId = relationships.map(el =>
+    el.sender.id === userId ? el.receiver.id : el.sender.id
+  );
+  return friendsId;
+};
