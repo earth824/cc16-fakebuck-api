@@ -88,3 +88,14 @@ RESPOSNSE
   403 { message: 'cannot accept your request' }
   500 { message: 'internal server error' }
 
+POST /posts         Create a new post
+HEADER
+  AUTHORIZATION     Bearer [JWT]
+REQUEST BODY        multipart/form-data
+  title?             string (at least one of title or image)
+  image?             blob (at least one of title or image)
+RESPONSE
+  201 { post: new post object }
+  400 { message: 'invalid input' }
+  401 { message: 'unauthenticated' }
+  500 { message: 'internal server error' }
